@@ -139,7 +139,7 @@ func main() {
 	// set up static files
 	FileServer(r, "/assets/", http.Dir("../assets/"))
 
-	log.Warn(http.ListenAndServe(":9003", r))
+	log.Warn(http.ListenAndServe("0.0.0.0:9003", r))
 }
 
 // FileServer adds a url to handle assets file in dev mode
