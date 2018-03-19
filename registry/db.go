@@ -16,6 +16,11 @@ var (
 	riakC   *riak.Client
 )
 
+type Entry struct {
+	Name string `bson:"name"`
+	Age  string `bson:"age"`
+}
+
 func init() {
 	var err error
 	session, err = mgo.Dial("localhost")
@@ -88,4 +93,14 @@ func newEntry(name, age string, fileHeader *multipart.FileHeader) (bson.ObjectId
 		return "", err
 	}
 	return id, nil
+}
+
+func list() ([]*Entry, error) {
+	c := db.C("entry")
+	q := c.Find(nil)
+	entries := make([]*Entry, 0)
+	if err := q.All(&entries); err != nil {
+		return nil, err
+	}
+	return entries, nil
 }

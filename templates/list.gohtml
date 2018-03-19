@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Portal: List</title>
+    <link href="/assets/node_modules/now-ui-kit/assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/assets/node_modules/now-ui-kit/assets/css/now-ui-kit.css" rel="stylesheet"/>
+    <link href="/assets/now-ui-kit.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+	<div class="row">
+          <div class="col-12 col-md-6">
+	    <h4>Entries</h4>
+	    <div class="card card-plain">
+	      <div class="card-body">
+		<div class="table-responsive">
+		  <table class="table table-striped">
+		    <thead>
+		      <tr>
+			<th>Name</th>
+			<th>Age</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      {{ range .list }}
+			<tr>
+			  <td>{{ .Name }}</td>
+			  <td>{{ .Age }}</td>
+			</tr>
+		      {{ end }}
+		    </tbody>
+		  </table>
+		</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+    <script src="/assets/node_modules/now-ui-kit/assets/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/core/popper.min.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/core/bootstrap.min.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/plugins/bootstrap-switch.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/plugins/nouislider.min.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/now-ui-kit.js"></script>
+  </body>
+</html>

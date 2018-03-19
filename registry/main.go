@@ -66,6 +66,23 @@ func main() {
 		})
 	})
 
+	r.Get("/list", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("../templates/list.gohtml")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		var entries []*Entry
+		if entries, err = list(); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		tmpl.Execute(w, map[string]interface{}{
+			"list": entries,
+		})
+	})
+
 	// set up static files
 	FileServer(r, "/assets/", http.Dir("../assets/"))
 
