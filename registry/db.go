@@ -1,13 +1,15 @@
 package main
 
 import (
+	"io/ioutil"
 	"mime/multipart"
 
+	"fmt"
 	riak "github.com/basho/riak-go-client"
 	util "github.com/basho/taste-of-riak/go/util"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"io/ioutil"
+	"sync"
 )
 
 var (
@@ -17,8 +19,15 @@ var (
 )
 
 type Entry struct {
-	Name string `bson:"name"`
-	Age  string `bson:"age"`
+	Name string        `bson:"name"`
+	Age  string        `bson:"age"`
+	ID   bson.ObjectId `bson:"_id"`
+}
+
+type File struct {
+	Name        string
+	Content     []byte
+	ContentType string
 }
 
 func init() {
@@ -39,7 +48,7 @@ func init() {
 	}
 }
 
-func close() {
+func closeDB() {
 	if session != nil {
 		session.Close()
 	}
@@ -81,8 +90,11 @@ func newEntry(name, age string, fileHeader *multipart.FileHeader) (bson.ObjectId
 	obj := &riak.Object{
 		Bucket:      "registry",
 		Key:         id.String(),
-		ContentType: "application/octet-stream",
+		ContentType: fileHeader.Header.Get("Content-Type"),
 		Value:       data,
+		UserMeta: []*riak.Pair{
+			{Key: "filename", Value: fileHeader.Header.Get("name")},
+		},
 	}
 
 	cmd, err := riak.NewStoreValueCommandBuilder().
@@ -103,4 +115,59 @@ func list() ([]*Entry, error) {
 		return nil, err
 	}
 	return entries, nil
+}
+
+func get(id string) (*Entry, error) {
+	c := db.C("entry")
+	q := c.FindId(bson.ObjectIdHex(id))
+	e := new(Entry)
+	if err := q.One(e); err != nil {
+		return nil, err
+	}
+	return e, nil
+}
+
+func getFile(id string) (*File, error) {
+	var (
+		cmd riak.Command
+		err error
+	)
+
+	if cmd, err = riak.NewFetchValueCommandBuilder().
+		WithBucket("registry").
+		WithKey(id).
+		Build(); err != nil {
+		return nil, err
+	}
+	done := make(chan riak.Command, 1)
+	wg := &sync.WaitGroup{}
+	a := &riak.Async{
+		Command: cmd,
+		Wait:    wg,
+		Done:    done,
+	}
+	if err = riakC.ExecuteAsync(a); err != nil {
+		return nil, err
+	}
+	wg.Wait()
+	close(done)
+
+	for d := range done {
+		f := d.(*riak.FetchValueCommand)
+		if f.Response.IsNotFound {
+			return nil, nil
+		}
+
+		obj := f.Response.Values[0]
+		file := &File{}
+		if !obj.HasUserMeta() {
+			file.Name = id
+		} else {
+			file.Name = obj.UserMeta[0].Value
+		}
+		file.Content = obj.Value
+		file.ContentType = obj.ContentType
+		return file, nil
+	}
+	return nil, nil
 }

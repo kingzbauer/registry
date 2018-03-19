@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -19,7 +20,7 @@ func init() {
 
 func main() {
 	// close up the database
-	defer close()
+	defer closeDB()
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -81,6 +82,37 @@ func main() {
 		tmpl.Execute(w, map[string]interface{}{
 			"list": entries,
 		})
+	})
+
+	r.Get("/entry/{id}", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("../templates/entry.gohtml")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		id := chi.URLParam(r, "id")
+		var entry *Entry
+		if entry, err = get(id); err != nil {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		tmpl.Execute(w, map[string]interface{}{
+			"entry": entry,
+		})
+	})
+
+	r.Get("/file/{id}", func(w http.ResponseWriter, r *http.Request) {
+		f, err := getFile(chi.URLParam(r, "id"))
+		if err != nil || f == nil {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+
+		w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", f.Name))
+		w.Header().Set("Content-Type", f.ContentType)
+		w.Write(f.Content)
 	})
 
 	// set up static files

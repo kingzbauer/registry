@@ -3,37 +3,28 @@
   <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Portal: List</title>
+    <title>{{ .entry.Name }}</title>
+    <link href="/assets/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/assets/node_modules/now-ui-kit/assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/assets/node_modules/now-ui-kit/assets/css/now-ui-kit.css" rel="stylesheet"/>
     <link href="/assets/now-ui-kit.css" rel="stylesheet"/>
   </head>
   <body>
     <div class="wrapper">
+      <br/>
       <div class="container">
 	<div class="row">
-          <div class="col-12 col-md-6">
-	    <h4>Entries</h4>
-	    <div class="card card-plain">
-	      <div class="card-body">
-		<div class="table-responsive">
-		  <table class="table table-striped">
-		    <thead>
-		      <tr>
-			<th>Name</th>
-			<th>Age</th>
-		      </tr>
-		    </thead>
-		    <tbody>
-		      {{ range .list }}
-			<tr>
-			  <td><a href="/entry/{{ .ID.Hex }}">{{ .Name }}</a></td>
-			  <td>{{ .Age }}</td>
-			</tr>
-		      {{ end }}
-		    </tbody>
-		  </table>
-		</div>
+          <div class="col-12 col-md-6 offset-md-4">
+	    <div class="card card-signup" data-background-color="orange">
+	      <div class="header text-center">
+		<h4 class="title title-up">{{ .entry.Name }}</h4>
+		<p class="text-center">
+		  <strong>Age</strong>
+		  {{ .entry.Age }}
+		</p>
+	      </div>
+	      <div class="card-body d-flex justify-content-center">
+		<a class="btn btn-round btn-neutral" href="/file/{{ .entry.ID.Hex }}" target="_blank">View file</a>
 	      </div>
 	    </div>
 	  </div>
