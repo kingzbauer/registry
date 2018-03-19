@@ -52,8 +52,8 @@
 		    <img src="assets/img/julie.jpg" alt="..." class="avatar img-raised">
 		    <span>{{ .entry.Name }}</span>
 		  </div>
-		  <div class="stats stats-right">
-		    <a href="/file/{{ .entry.ID }}" target="_blank"><i class="now-ui-icons files_paper"></i> View file</a>
+		  <div class="stats stats-right" style="margin-top: -16px;">
+		    <a href="/file/{{ .entry.ID.Hex }}" class="btn btn-simple btn-round btn-sm" target="_blank"><i class="now-ui-icons files_paper"></i> View file</a>
 		  </div>
 		</div>
 	      </div>

@@ -8,6 +8,7 @@ import (
 	util "github.com/basho/taste-of-riak/go/util"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+	"os"
 	"sync"
 )
 
@@ -30,8 +31,21 @@ type File struct {
 }
 
 func init() {
+	var (
+		MongoHost = os.Getenv("MONGO_HOST")
+		RiakHost  = os.Getenv("RIAK_HOST")
+	)
+
+	if len(MongoHost) == 0 {
+		MongoHost = "localhost"
+	}
+
+	if len(RiakHost) == 0 {
+		RiakHost = "localhost"
+	}
+
 	var err error
-	session, err = mgo.Dial("localhost")
+	session, err = mgo.Dial(MongoHost)
 	if err != nil {
 		panic(err)
 	}
@@ -39,7 +53,7 @@ func init() {
 
 	// initial riak
 	o := &riak.NewClientOptions{
-		RemoteAddresses: []string{"localhost:8087"},
+		RemoteAddresses: []string{RiakHost + ":8087"},
 	}
 	riakC, err = riak.NewClient(o)
 	if err != nil {
