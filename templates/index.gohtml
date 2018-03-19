@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Portal</title>
+    <link href="/assets/node_modules/now-ui-kit/assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/assets/node_modules/now-ui-kit/assets/css/now-ui-kit.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+	<div class="row">
+          <div class="col-12">
+	    <h4>New entry</h4>
+	    <div class="row">
+	      <div class="col-md-4 offset-md-4 col-12">
+		<form action="" method="post" enctype="multipart/form-data">
+		  {{ if .errors }}
+		    {{ range .errors }}
+		      <div class="alert alert-danger">
+			{{ . }}
+		      </div>
+		    {{ end}}
+		  {{ end }}
+		  {{ if .message }}
+		    <div class="alert alert-primary">
+		      {{ .message }}
+		    </div>
+		  {{ end }}
+		  <div class="form-group">
+		    <input id="id_name" class="form-control" name="name" type="text" value="" placeholder="Name*" require/>
+		  </div>
+		  <div class="form-group">
+		    <input id="id_age" class="form-control" name="age" type="text" value="" placeholder="Age*" require/>
+		  </div>
+		  <div class="form-group">
+		    <div class="custom-file">
+		      <input id="file" name="file" type="file" value="" placeholder="Choose file"/>
+		      <label class="custom-file-label" for="file">Choose file</label>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <button class="btn btn-primary btn-round" type="submit">Save</button>
+		  </div>
+		</form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+    <script src="/assets/node_modules/now-ui-kit/assets/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/core/popper.min.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/core/bootstrap.min.js"></script>
+    <script src="/assets/node_modules/now-ui-kit/assets/js/now-ui-kit.js"></script>
+  </body>
+</html>
