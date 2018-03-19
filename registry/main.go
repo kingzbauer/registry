@@ -113,7 +113,7 @@ func main() {
 	r.Get("/file/{id}", func(w http.ResponseWriter, r *http.Request) {
 		f, err := getFile(chi.URLParam(r, "id"))
 		if err != nil || f == nil {
-			errMsg := ""
+			errMsg := "No file found"
 			if err != nil {
 				errMsg = err.Error()
 			}
