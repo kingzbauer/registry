@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 
-	"fmt"
 	riak "github.com/basho/riak-go-client"
 	util "github.com/basho/taste-of-riak/go/util"
 	"gopkg.in/mgo.v2"

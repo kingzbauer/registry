@@ -3,19 +3,26 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"image/png"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/boombuler/barcode"
+	"github.com/boombuler/barcode/qr"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	log "github.com/sirupsen/logrus"
 )
 
+var host string
+
 func init() {
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.WarnLevel)
+
+	host = os.Getenv("QR_HOST")
 }
 
 func main() {
@@ -113,6 +120,20 @@ func main() {
 		w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", f.Name))
 		w.Header().Set("Content-Type", f.ContentType)
 		w.Write(f.Content)
+	})
+
+	r.Get("/qr/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		URL := fmt.Sprintf("%s/entry/%s", host, id)
+
+		// set the headers
+		w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", id))
+		w.Header().Set("Content-Type", "image/png")
+
+		qrCode, _ := qr.Encode(URL, qr.M, qr.Auto)
+		qrCode, _ = barcode.Scale(qrCode, 200, 200)
+
+		png.Encode(w, qrCode)
 	})
 
 	// set up static files

@@ -22,6 +22,7 @@
 		      <tr>
 			<th>Name</th>
 			<th>Age</th>
+			<th></th>
 		      </tr>
 		    </thead>
 		    <tbody>
@@ -29,6 +30,7 @@
 			<tr>
 			  <td><a href="/entry/{{ .ID.Hex }}">{{ .Name }}</a></td>
 			  <td>{{ .Age }}</td>
+			  <td><a href="/qr/{{ .ID.Hex }}" target="_blank">generate qr</a></td>
 			</tr>
 		      {{ end }}
 		    </tbody>
