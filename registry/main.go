@@ -61,7 +61,7 @@ func main() {
 			return
 		}
 
-		_, fileHeader, _ := r.FormFile("file")
+		_, fileHeader, err := r.FormFile("file")
 		_, err = newEntry(name, age, fileHeader)
 		if err != nil {
 			tmpl.Execute(w, map[string]interface{}{

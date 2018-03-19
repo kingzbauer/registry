@@ -88,7 +88,7 @@ func newEntry(name, age string, fileHeader *multipart.FileHeader) (bson.ObjectId
 	// insert the file into riak
 	obj := &riak.Object{
 		Bucket:      "registry",
-		Key:         id.String(),
+		Key:         id.Hex(),
 		ContentType: fileHeader.Header.Get("Content-Type"),
 		Value:       data,
 		UserMeta: []*riak.Pair{
@@ -99,10 +99,22 @@ func newEntry(name, age string, fileHeader *multipart.FileHeader) (bson.ObjectId
 	cmd, err := riak.NewStoreValueCommandBuilder().
 		WithContent(obj).
 		Build()
-	err = riakC.Execute(cmd)
+
 	if err != nil {
 		return "", err
 	}
+
+	wg := &sync.WaitGroup{}
+	a := &riak.Async{
+		Command: cmd,
+		Wait:    wg,
+	}
+
+	err = riakC.ExecuteAsync(a)
+	if err != nil {
+		return "", err
+	}
+	wg.Wait()
 	return id, nil
 }
 
