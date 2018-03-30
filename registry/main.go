@@ -12,15 +12,16 @@ import (
 	"github.com/boombuler/barcode/qr"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 var host string
+var log = logrus.New()
 
 func init() {
-	log.SetFormatter(&log.JSONFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.WarnLevel)
+	log.Formatter = &logrus.JSONFormatter{}
+	log.Out = os.Stdout
+	log.SetLevel(logrus.WarnLevel)
 
 	host = os.Getenv("QR_HOST")
 }
@@ -33,46 +34,10 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	r.Get("/portal", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("../templates/index.gohtml")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+	r.Get("/add", getAdd)
+	r.Post("/add", postAdd)
 
-		tmpl.Execute(w, map[string]interface{}{
-			"errors": nil,
-		})
-	})
-	r.Post("/portal", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("../templates/index.gohtml")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		// retrieve the form values
-		name := r.FormValue("name")
-		age := r.FormValue("age")
-		if len(name) == 0 || len(age) == 0 {
-			tmpl.Execute(w, map[string]interface{}{
-				"errors": []string{"All the fields are required"},
-			})
-			return
-		}
-
-		_, fileHeader, err := r.FormFile("file")
-		_, err = newEntry(name, age, fileHeader)
-		if err != nil {
-			tmpl.Execute(w, map[string]interface{}{
-				"errors": []string{err.Error()},
-			})
-			return
-		}
-		tmpl.Execute(w, map[string]interface{}{
-			"message": "Entry saved successfully",
-		})
-	})
+	r.Get("/license/{category}/", licenseByCategory)
 
 	r.Get("/list", func(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.ParseFiles("../templates/list.gohtml")

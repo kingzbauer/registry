@@ -51,7 +51,7 @@
 	    <div class="row">
 	      <div class="col-md-4 offset-md-4 col-12">
 		<h4>New entry</h4>
-		<form action="" method="post" enctype="multipart/form-data">
+		<form action="" method="post">
 		  {{ if .errors }}
 		    {{ range .errors }}
 		      <div class="alert alert-danger">
@@ -65,13 +65,53 @@
 		    </div>
 		  {{ end }}
 		  <div class="form-group">
-		    <input id="id_name" class="form-control" name="name" type="text" value="" placeholder="Name*" require/>
+		    <label for="id_category">License category</label>
+		    <select id="id_category" name="category" class="form-control" required>
+		      <option value="">-- select license category --</option>
+		      {{ range $key, $value := .categories }}
+			<option value="{{ $value }}">{{ $key }}</option>
+		      {{ end }}
+		    </select>
 		  </div>
 		  <div class="form-group">
-		    <input id="id_age" class="form-control" name="age" type="text" value="" placeholder="Age*" require/>
+		    <label for="id_license">License number</label>
+		    <input id="id_licence_number" class="form-control" name="licence_number" type="text" value="" placeholder="License number*" required/>
 		  </div>
 		  <div class="form-group">
-		    <input id="file" name="file" type="file" value="" placeholder="Choose file" class="form-control" style="opacity: 1;  position: relative;"/>
+		    <label for="id_year">Year</label>
+		    <input id="id_year" class="form-control" name="year" type="text" value="" placeholder="Year*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="id_applicant_name">Commercial name for applicant</label>
+		    <input id="id_applicant_name" class="form-control" name="applicant_name" type="text" value="" placeholder="Commercial name for applicant*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="id_business_id">Business ID</label>
+		    <input id="id_business_id" class="form-control" name="business_id" type="text" value="" placeholder="Business ID*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="">Pin number</label>
+		    <input id="id_pin_no" class="form-control" name="pin_no" type="text" value="" placeholder="Pin number*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="">Street</label>
+		    <input id="id_street" class="form-control" name="location.street" type="text" value="" placeholder="Street*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="">Town</label>
+		    <input id="id_town" class="form-control" name="location.town" type="text" value="" placeholder="Town*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="">P.O Box</label>
+		    <input id="id_box" class="form-control" name="location.box" type="text" value="" placeholder="P.O Box*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="">Building</label>
+		    <input id="id_building" class="form-control" name="location.building" type="text" value="" placeholder="Building*" required/>
+		  </div>
+		  <div class="form-group">
+		    <label for="">Stall number</label>
+		    <input id="id_stall" class="form-control" name="location.stall_number" type="text" value="" placeholder="Stall number"/>
 		  </div>
 		  <div class="form-group">
 		    <button class="btn btn-primary btn-round" type="submit">Save</button>

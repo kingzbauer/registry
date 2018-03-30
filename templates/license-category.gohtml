@@ -31,13 +31,8 @@
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
     	  <ul class="navbar-nav">
             <li class="nav-item">
-	      <a class="nav-link" href="/portal">
+	      <a class="nav-link" href="/add">
 		New entry
-	      </a>
-            </li>
-	    <li class="nav-item">
-	      <a class="nav-link" href="/list">
-		Entries
 	      </a>
             </li>
 	  </ul>
@@ -47,37 +42,52 @@
     <div class="wrapper">
       <div class="container">
 	<div class="row">
-          <div class="col-12">
+	  <div class="col-md-10 col-sm-12 offset-md-1">
+	    <h4>Licenses under <strong>{{ .category }}</strong></h4>
 	    <div class="row">
-	      <div class="col-md-4 offset-md-4 col-12">
-		<h4>New entry</h4>
-		<form action="" method="post" enctype="multipart/form-data">
-		  {{ if .errors }}
-		    {{ range .errors }}
-		      <div class="alert alert-danger">
-			{{ . }}
-		      </div>
-		    {{ end}}
-		  {{ end }}
-		  {{ if .message }}
-		    <div class="alert alert-primary">
-		      {{ .message }}
-		    </div>
-		  {{ end }}
-		  <div class="form-group">
-		    <input id="id_name" class="form-control" name="name" type="text" value="" placeholder="Name*" require/>
+	      <div class="col-md-12">
+		{{ if .error }}
+		  <div class="alert alert-danger">
+		    {{ .error }}
 		  </div>
-		  <div class="form-group">
-		    <input id="id_age" class="form-control" name="age" type="text" value="" placeholder="Age*" require/>
-		  </div>
-		  <div class="form-group">
-		    <input id="file" name="file" type="file" value="" placeholder="Choose file" class="form-control" style="opacity: 1;  position: relative;"/>
-		  </div>
-		  <div class="form-group">
-		    <button class="btn btn-primary btn-round" type="submit">Save</button>
-		  </div>
-		</form>
+		{{ end }}
 	      </div>
+	    </div>
+	    <div class="table-responsive">
+	      <table class="table">
+		<thead>
+		  <tr>
+		    <th>License Number</th>
+		    <th>Year</th>
+		    <th>Commercial Name of Applicant</th>
+		    <th>Business ID</th>
+		    <th>Pin No</th>
+		    <th>Location</th>
+		    <th>Expiry Date</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  {{ if .licenses }}
+		    {{ range .licenses }}
+		      <tr>
+			<td>{{ .LicenceNumber }}</td>
+			<td>{{ .Year }}</td>
+			<td>{{ .ApplicantName }}</td>
+			<td>{{ .BusinessID }}</td>
+			<td>{{ .PinNo }}</td>
+			<td>
+			  {{ .Location.Street }}, <br/>
+			  {{ .Location.Town }}, <br/>
+			  {{ .Location.Box }}, <br/>
+			  {{ .Location.Building }}, <br/>
+			  {{ .Location.StallNumber }}
+			</td>
+			<td></td>
+		      </tr>
+		    {{ end }}
+		  {{ end }}
+		</tbody>
+	      </table>
 	    </div>
 	  </div>
 	</div>
