@@ -53,6 +53,9 @@
 		{{ end }}
 	      </div>
 	    </div>
+	    {{ if .licenses | not }}
+	      <div class="alert alert-info">No licenses to show</div>
+	    {{ end }}
 	    <div class="card card-plain">
 	      <div class="card-body">
 		<div class="table-responsive">
