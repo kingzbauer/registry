@@ -33,7 +33,7 @@ const (
 	TravellersAlcoholicDrink Category = "travellers-alcoholic-drinks"
 	TheatreAlcoholicDrink    Category = "theatre-alcoholic-drinks"
 	ClubAlcoholicDrink       Category = "club-alcoholic-drinks"
-	HotelAlcoholicDrink      Category = "Hotel-alcoholic-drinks"
+	HotelAlcoholicDrink      Category = "hotel-alcoholic-drinks"
 	RestaurantDrink          Category = "restaurant-drinks"
 	WholesaleDistributors    Category = "wholesale-distributors"
 	GeneralRetails           Category = "general-retails"
