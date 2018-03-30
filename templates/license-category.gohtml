@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Portal</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
     <link href="/assets/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/assets/node_modules/now-ui-kit/assets/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/assets/css/now-ui-kit.css" rel="stylesheet"/>
@@ -52,41 +53,45 @@
 		{{ end }}
 	      </div>
 	    </div>
-	    <div class="table-responsive">
-	      <table class="table">
-		<thead>
-		  <tr>
-		    <th>License Number</th>
-		    <th>Year</th>
-		    <th>Commercial Name of Applicant</th>
-		    <th>Business ID</th>
-		    <th>Pin No</th>
-		    <th>Location</th>
-		    <th>Expiry Date</th>
-		  </tr>
-		</thead>
-		<tbody>
-		  {{ if .licenses }}
-		    {{ range .licenses }}
+	    <div class="card card-plain">
+	      <div class="card-body">
+		<div class="table-responsive">
+		  <table class="table table-condensed">
+		    <thead>
 		      <tr>
-			<td>{{ .LicenceNumber }}</td>
-			<td>{{ .Year }}</td>
-			<td>{{ .ApplicantName }}</td>
-			<td>{{ .BusinessID }}</td>
-			<td>{{ .PinNo }}</td>
-			<td>
-			  {{ .Location.Street }}, <br/>
-			  {{ .Location.Town }}, <br/>
-			  {{ .Location.Box }}, <br/>
-			  {{ .Location.Building }}, <br/>
-			  {{ .Location.StallNumber }}
-			</td>
-			<td>{{ .ExpiryDate }}</td>
+			<th>License Number</th>
+			<th>Year</th>
+			<th>Commercial Name of Applicant</th>
+			<th>Business ID</th>
+			<th>Pin No</th>
+			<th>Location</th>
+			<th>Expiry Date</th>
 		      </tr>
-		    {{ end }}
-		  {{ end }}
-		</tbody>
-	      </table>
+		    </thead>
+		    <tbody>
+		      {{ if .licenses }}
+			{{ range .licenses }}
+			  <tr>
+			    <td>{{ .LicenceNumber }}</td>
+			    <td>{{ .Year }}</td>
+			    <td>{{ .ApplicantName }}</td>
+			    <td>{{ .BusinessID }}</td>
+			    <td>{{ .PinNo }}</td>
+			    <td>
+			      {{ .Location.Street }}, <br/>
+			      {{ .Location.Town }}, <br/>
+			      {{ .Location.Box }}, <br/>
+			      {{ .Location.Building }}, <br/>
+			      {{ .Location.StallNumber }}
+			    </td>
+			    <td>{{ .ExpiryDate }}</td>
+			  </tr>
+			{{ end }}
+		      {{ end }}
+		    </tbody>
+		  </table>
+		</div>
+	      </div>
 	    </div>
 	  </div>
 	</div>
