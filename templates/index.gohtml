@@ -62,7 +62,7 @@
 		  {{ end }}
 		  <div class="form-group">
 		    <label for="id_category">License category</label>
-		    <select id="id_category" name="category" class="form-control" required>
+		    <select id="id_category" name="category" class="form-control selectpicker" required data-style="btn btn-info btn-round">
 		      <option value="">-- select license category --</option>
 		      {{ range $key, $value := .categories }}
 			<option value="{{ $key }}">{{ $value }}</option>
@@ -128,6 +128,7 @@
     <script src="/assets/node_modules/now-ui-kit/assets/js/core/popper.min.js"></script>
     <script src="/assets/node_modules/now-ui-kit/assets/js/core/bootstrap.min.js"></script>
     <script src="/assets/node_modules/moment/moment.js"></script>
+    <script src="/assets/node_modules/bootstrap-select/js/bootstrap-select.js"></script>
     <script src="/assets/js/now-ui-kit.js"></script>
     <script src="/assets/js/bootstrap-datetimepicker.min.js"></script>
     <script>

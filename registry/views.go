@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -78,5 +79,29 @@ func licenseByCategory(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, map[string]interface{}{
 		"licenses": licenses,
 		"category": CategoryMap[category],
+	})
+}
+
+func selectCategory(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		category := r.FormValue("category")
+		http.Redirect(w, r, fmt.Sprintf("/license/%s/", category), http.StatusSeeOther)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("../templates/categories-choose.gohtml")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	tmpl.Execute(w, map[string]interface{}{
+		"categories": CategoryMap,
+	})
+}
+
+func RedirectTo(url string) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, url, http.StatusSeeOther)
 	})
 }

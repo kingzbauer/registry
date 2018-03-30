@@ -34,6 +34,8 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
+	r.HandleFunc("/", selectCategory)
+
 	r.Get("/add", getAdd)
 	r.Post("/add", postAdd)
 
