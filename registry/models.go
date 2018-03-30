@@ -14,6 +14,7 @@ type LicenseEntry struct {
 	Location      Location      `bson:"location" schema:"location"`
 	Category      Category      `bson:"category" schema:"category"`
 	ObjectID      bson.ObjectId `bson:"_id,omitempty" schema:"-"`
+	ExpiryDate    string        `bson:"expiry_date" schema:"expiry_date"`
 }
 
 type Location struct {
@@ -39,17 +40,17 @@ const (
 	AlcoholRehabilitation    Category = "alcohol-rehabilitation"
 )
 
-var CategoryMap = map[string]Category{
-	"Temporary Alcoholic Drinks License":  TempAlcoholicDrink,
-	"Brewers Alcoholic License":           BrewersAlcoholic,
-	"Travellers Alcoholic Drinks License": TravellersAlcoholicDrink,
-	"Theatre Alcoholic Drinks License":    TheatreAlcoholicDrink,
-	"Club Alcoholic Drinks License":       ClubAlcoholicDrink,
-	"Hotel Alcoholic Drinks License":      HotelAlcoholicDrink,
-	"Restaurant Drink License":            RestaurantDrink,
-	"Wholesale Distributors":              WholesaleDistributors,
-	"General Retails":                     GeneralRetails,
-	"Alcoholic Rehabilitation":            AlcoholRehabilitation,
+var CategoryMap = map[Category]string{
+	TempAlcoholicDrink:       "Temporary Alcoholic Drinks License",
+	BrewersAlcoholic:         "Brewers Alcoholic License",
+	TravellersAlcoholicDrink: "Travellers Alcoholic Drinks License",
+	TheatreAlcoholicDrink:    "Theatre Alcoholic Drinks License",
+	ClubAlcoholicDrink:       "Club Alcoholic Drinks License",
+	HotelAlcoholicDrink:      "Hotel Alcoholic Drinks License",
+	RestaurantDrink:          "Restaurant Drink License",
+	WholesaleDistributors:    "Wholesale Distributors",
+	GeneralRetails:           "General Retails",
+	AlcoholRehabilitation:    "Alcoholic Rehabilitation",
 }
 
 // Save to the db

@@ -60,7 +60,7 @@ func postAdd(w http.ResponseWriter, r *http.Request) {
 }
 
 func licenseByCategory(w http.ResponseWriter, r *http.Request) {
-	category := chi.URLParam(r, "category")
+	category := Category(chi.URLParam(r, "category"))
 
 	tmpl, err := template.ParseFiles("../templates/license-category.gohtml")
 	if err != nil {
@@ -77,6 +77,6 @@ func licenseByCategory(w http.ResponseWriter, r *http.Request) {
 	}
 	tmpl.Execute(w, map[string]interface{}{
 		"licenses": licenses,
-		"category": category,
+		"category": CategoryMap[category],
 	})
 }
